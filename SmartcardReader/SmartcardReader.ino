@@ -1,4 +1,4 @@
-#include <SoftwareSerial.h>
+#include "src/SoftwareSerial/SoftwareSerial.h"
 #include "SmartcardInterface.h"
 
 // Comment-out line below to disable debugging via Serial Monitor.
