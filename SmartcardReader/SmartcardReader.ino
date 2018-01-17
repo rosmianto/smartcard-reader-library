@@ -1,5 +1,5 @@
-#include "src/SoftwareSerial/SoftwareSerial.h"
-#include "SmartcardInterface.h"
+#include "src/SoftwareSerial.h"
+#include "src/SmartcardInterface.h"
 
 // Comment-out line below to disable debugging via Serial Monitor.
 // #define DEBUG
@@ -12,7 +12,7 @@
 #define TRG 2
 #define CLK 9
 
-CardInterface interface_card(VCC, RST, RX, TX, TRG);
+CardInterface interface_card(VCC, RST, RX, TX);
 
 // Variable declaration:
 String cmd = "";
@@ -27,14 +27,14 @@ void setup(){
   OCR1A = 1; // CLK frequency = 4 MHz
   pinMode(CLK, OUTPUT);
   
-  interface_card.peripheral_init();
+  interface_card.init();
   interface_card.activate_card();
 
   String ATR = interface_card.read_response();
   Serial.println("ATR: " + ATR);
   interface_card.begin(ATR);
   delay(100);
-  interface_card.init_card();
+  interface_card.transmit_pps();
   
   Serial.println("READY.");
 

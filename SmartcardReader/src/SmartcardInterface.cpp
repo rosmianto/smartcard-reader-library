@@ -5,16 +5,16 @@
 
 #include "Arduino.h"
 #include "SmartcardInterface.h"
-#include "src/SoftwareSerial/SoftwareSerial.h"
+#include "SoftwareSerial.h"
+
 #define BAUD_SC 10753 //2400
 
 // Constructor:
-CardInterface::CardInterface(int VCC, int RST, int RX, int TX, int TRG) : card(RX, TX){
+CardInterface::CardInterface(int VCC, int RST, int RX, int TX) : card(RX, TX){
   _VCC = VCC;
   _RST = RST;
   _RX = RX;
   _TX = TX;
-  _TRG = TRG;
 }
 
 void CardInterface::begin(String ATR){
@@ -43,7 +43,7 @@ void CardInterface::begin(String ATR){
   }
 }
 
-void CardInterface::peripheral_init(){
+void CardInterface::init(){
   pinMode(_VCC, OUTPUT);
   pinMode(_RST, OUTPUT); pinMode(_TRG, INPUT);
   
@@ -68,7 +68,7 @@ void CardInterface::activate_card(){
   digitalWrite(_RST, HIGH);
 }
 
-void CardInterface::init_card(){
+void CardInterface::transmit_pps(){
   String resp;
   // Bad practice: Sanitation checking should be implemented. But this will
   // work anyway.
@@ -101,9 +101,6 @@ String CardInterface::transmitAPDU_T0(String apdu){
   String response1 = read_response();
   if(response1.substring(0, 1) != "6" && response1.substring(0, 1) != "9")
     response1.remove(0, 2);
-    
-//  if(apdu.substring(8, 10) != "00")
-//    response1.remove(0, 2);
 
   int _size = apdu.length();
   if(_size <= 10)
@@ -172,8 +169,6 @@ String CardInterface::transmitAPDU_T1(String apdu){
   response = read_response();
   response.replace(" ","");
   response.toUpperCase();
-//  Serial.print("Response: ");
-//  Serial.println(response);
   
   int response_byte_length = response.length() / 2;
   byte apdu_response_byte[response_byte_length];
@@ -231,5 +226,5 @@ String CardInterface::transmit_raw(String raw){
     card.write_8E2(b);
   }
   card.listen();
-  return read_response(); //.substring(9);
+  return read_response();
 }

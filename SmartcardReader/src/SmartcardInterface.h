@@ -7,19 +7,19 @@
 #define smartcard_interface_h
 
 #include "Arduino.h"
-#include "src/SoftwareSerial/SoftwareSerial.h"
+#include "SoftwareSerial.h"
 
 class CardInterface
 {
   public:
-    CardInterface(int VCC, int RST, int RX, int TX, int TRG);
+    CardInterface(int VCC, int RST, int RX, int TX);
     void begin(String ATR);
-    void peripheral_init();
+    void init();
     void activate_card();
     String transmitAPDU(String apdu);
     String transmitAPDU_T0(String apdu);
     String transmitAPDU_T1(String apdu);
-    void init_card();
+    void transmit_pps();
     String read_response();
     String transmit_raw(String raw);    
     int protocol;
