@@ -5,7 +5,6 @@
 
 #include "Arduino.h"
 #include "SmartcardInterface.h"
-#include "SoftwareSerial.h"
 
 #define BAUD_SC 10753 //2400
 
