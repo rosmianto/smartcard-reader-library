@@ -7,7 +7,7 @@
 #define smartcard_interface_h
 
 #include "Arduino.h"
-#include "SoftwareSerial.h"
+#include "utility/SoftwareSerial.h"
 
 class CardInterface
 {
